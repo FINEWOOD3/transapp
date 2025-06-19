@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <!-- 保留原有UI设计，确保有以下关键组件：
+       - 翻译设置区域 (service_combo, src_lang_combo, target_lang_combo)
+       - 按钮 (open_pdf_btn, translate_btn, save_btn, export_pdf_btn)
+       - 进度条 (progress_bar)
+       - 文本显示区域 (input_text, output_text)
+  -->
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
