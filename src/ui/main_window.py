@@ -1,17 +1,27 @@
 import os
 from pathlib import Path
 from PyQt5.QtWidgets import (QMainWindow, QFileDialog, QMessageBox, 
-                            QProgressBar, QTextEdit, QPushButton, QComboBox)
-from PyQt5.QtCore import QThread, pyqtSignal
+                            QProgressBar, QTextEdit, QPushButton, QComboBox,
+                            QVBoxLayout, QWidget)
+from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.uic import loadUiType
-
-from src.core.pdf_parser import PDFParser
+import logging
 from src.core.pdf_generator import PDFGenerator
+from src.core.pdf_parser import PDFParser
 from src.core.translation import TranslationEngine
+
+# 配置日志
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # 加载UI文件
 UI_FILE = Path(__file__).parent / "main_window.ui"
-WindowUI, WindowBase = loadUiType(str(UI_FILE))
+if UI_FILE.exists():
+    WindowUI, WindowBase = loadUiType(str(UI_FILE))
+else:
+    logger.error("UI文件未找到，将使用基础窗口")
+    class WindowUI: pass
+    class WindowBase(QMainWindow): pass
 
 class TranslationThread(QThread):
     """翻译线程"""
@@ -69,41 +79,75 @@ class MainWindow(WindowBase, WindowUI):
     
     def __init__(self, translation_engine: TranslationEngine):
         super().__init__()
-        self.setupUi(self)
         
-        # 初始化核心组件
+        # 初始化UI
+        self._init_ui()
+        
+        # 核心组件
         self.translation_engine = translation_engine
         self.pdf_parser = PDFParser()
         self.pdf_generator = PDFGenerator()
         self.current_file = None
         
-        # 设置UI初始状态
-        self.init_ui()
-        
         # 连接信号槽
-        self.connect_signals()
+        self._connect_signals()
 
-    def init_ui(self):
-        """初始化UI状态"""
+    def _init_ui(self):
+        """初始化UI组件"""
+        if hasattr(self, 'setupUi'):
+            self.setupUi(self)
+        else:
+            self._create_fallback_ui()
+        
+        # 确保progress_bar存在
+        if not hasattr(self, 'progress_bar'):
+            self.progress_bar = QProgressBar()
+            self.statusBar().addPermanentWidget(self.progress_bar)
+        
+        # 初始化状态
         self.setWindowTitle('学术文献翻译工具')
         self.progress_bar.setVisible(False)
+        self.progress_bar.setRange(0, 100)
         self.export_pdf_btn.setEnabled(False)
-        
-        # 初始化语言选择
+
+        # 语言选择
         self.src_lang_combo.addItems(['en', 'zh', 'ja', 'fr'])
         self.target_lang_combo.addItems(['zh', 'en'])
-        
-        # 设置默认值
         self.src_lang_combo.setCurrentText('en')
         self.target_lang_combo.setCurrentText('zh')
 
-    def connect_signals(self):
+    def _create_fallback_ui(self):
+        """创建备用UI（当UI文件不存在时）"""
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+        layout = QVBoxLayout(central_widget)
+        
+        # 创建基本控件
+        self.input_text = QTextEdit()
+        self.output_text = QTextEdit()
+        self.open_pdf_btn = QPushButton("打开PDF")
+        self.translate_btn = QPushButton("翻译")
+        self.save_btn = QPushButton("保存为TXT")
+        self.export_pdf_btn = QPushButton("导出PDF")
+        self.progress_bar = QProgressBar()
+        
+        # 添加到布局
+        layout.addWidget(self.input_text)
+        layout.addWidget(self.output_text)
+        layout.addWidget(self.open_pdf_btn)
+        layout.addWidget(self.translate_btn)
+        layout.addWidget(self.save_btn)
+        layout.addWidget(self.export_pdf_btn)
+        layout.addWidget(self.progress_bar)
+
+    def _connect_signals(self):
         """连接信号与槽"""
         self.open_pdf_btn.clicked.connect(self.on_open_pdf)
         self.translate_btn.clicked.connect(self.on_translate)
         self.save_btn.clicked.connect(self.on_save_txt)
         self.export_pdf_btn.clicked.connect(self.on_export_pdf)
 
+    # 以下是原有的业务方法（保持不变）
     def on_open_pdf(self):
         """打开PDF文件"""
         file_path, _ = QFileDialog.getOpenFileName(
@@ -111,7 +155,6 @@ class MainWindow(WindowBase, WindowUI):
         
         if file_path:
             try:
-                # 解析PDF并显示基本信息
                 elements = self.pdf_parser.parse_and_store(file_path)
                 self.input_text.setPlainText(
                     f"已加载PDF文件: {Path(file_path).name}\n\n"
@@ -230,9 +273,20 @@ class MainWindow(WindowBase, WindowUI):
 if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
+    from src.core.translation import TranslationEngine
     
     app = QApplication(sys.argv)
-    engine = TranslationEngine()  # 需要实际初始化你的翻译引擎
-    window = MainWindow(engine)
-    window.show()
-    sys.exit(app.exec_())
+    
+    try:
+        # 初始化翻译引擎（示例）
+        engine = TranslationEngine()
+        
+        # 创建并显示主窗口
+        window = MainWindow(engine)
+        window.show()
+        
+        sys.exit(app.exec_())
+    except Exception as e:
+        logger.critical(f"应用程序启动失败: {str(e)}")
+        QMessageBox.critical(None, "错误", f"应用程序启动失败:\n{str(e)}")
+        sys.exit(1)

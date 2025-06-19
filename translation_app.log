@@ -1,0 +1,53 @@
+2025-06-19 20:29:25,364 - __main__ - INFO - 成功加载配置文件: config\config.ini
+2025-06-19 20:29:25,608 - __main__ - INFO - 百度翻译引擎初始化成功
+2025-06-19 20:29:25,608 - __main__ - ERROR - 翻译引擎初始化失败: 'TranslationEngine' object has no attribute 'available_translators'
+2025-06-19 20:30:12,666 - __main__ - INFO - 应用程序退出
+2025-06-19 20:32:07,632 - __main__ - INFO - 成功加载配置文件: config\config.ini
+2025-06-19 20:32:07,863 - __main__ - INFO - 百度翻译引擎初始化成功
+2025-06-19 20:32:07,944 - __main__ - ERROR - 窗口创建失败: 'MainWindow' object has no attribute 'progress_bar'
+2025-06-19 20:32:12,928 - __main__ - INFO - 应用程序退出
+2025-06-19 20:39:41,610 - __main__ - INFO - 成功加载配置文件: config\config.ini
+2025-06-19 20:39:41,844 - __main__ - INFO - 百度翻译引擎初始化成功
+2025-06-19 20:39:41,924 - __main__ - CRITICAL - 未处理的异常: name 'TranslationEngine' is not defined
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Desktop\translation_app\main.py", line 111, in main
+    from src.ui.main_window import MainWindow
+  File "C:\Users\ASUS\Desktop\translation_app\src\ui\main_window.py", line 76, in <module>
+    class MainWindow(WindowBase, WindowUI):
+    ...<193 lines>...
+            self.export_pdf_btn.setEnabled(enabled)
+  File "C:\Users\ASUS\Desktop\translation_app\src\ui\main_window.py", line 79, in MainWindow
+    def __init__(self, translation_engine: TranslationEngine):
+                                           ^^^^^^^^^^^^^^^^^
+NameError: name 'TranslationEngine' is not defined. Did you mean: 'TranslationThread'?
+2025-06-19 20:39:52,456 - __main__ - INFO - 应用程序退出
+2025-06-19 20:40:57,076 - __main__ - INFO - 成功加载配置文件: config\config.ini
+2025-06-19 20:40:57,317 - __main__ - INFO - 百度翻译引擎初始化成功
+2025-06-19 20:40:57,405 - __main__ - ERROR - 窗口创建失败: 'MainWindow' object has no attribute 'export_pdf_btn'
+2025-06-19 20:41:01,604 - __main__ - INFO - 应用程序退出
+2025-06-19 20:55:33,864 - __main__ - INFO - 成功加载配置文件: config\config.ini
+2025-06-19 20:55:34,111 - __main__ - INFO - 百度翻译引擎初始化成功
+2025-06-19 20:55:34,491 - __main__ - INFO - 应用程序启动成功
+2025-06-19 20:55:38,134 - __main__ - INFO - 应用程序退出
+2025-06-19 21:07:03,363 - __main__ - INFO - 成功加载配置文件: config\config.ini
+2025-06-19 21:07:03,599 - __main__ - INFO - 百度翻译引擎初始化成功
+2025-06-19 21:07:03,695 - __main__ - CRITICAL - 未处理的异常: No module named 'resources_rc'
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Desktop\translation_app\main.py", line 111, in main
+    from src.ui.main_window import MainWindow
+  File "C:\Users\ASUS\Desktop\translation_app\src\ui\main_window.py", line 20, in <module>
+    WindowUI, WindowBase = loadUiType(str(UI_FILE))
+                           ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Desktop\translation_app\venv\Lib\site-packages\PyQt5\uic\__init__.py", line 207, in loadUiType
+    exec(code_string.getvalue(), ui_globals)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 235, in <module>
+ModuleNotFoundError: No module named 'resources_rc'
+2025-06-19 21:07:07,738 - __main__ - INFO - 应用程序退出
+2025-06-19 21:29:16,639 - __main__ - INFO - 成功加载配置文件: config\config.ini
+2025-06-19 21:29:17,040 - __main__ - INFO - 百度翻译引擎初始化成功
+2025-06-19 21:29:17,713 - __main__ - INFO - 应用程序启动成功
+2025-06-19 21:30:00,349 - src.core.pdf_parser - ERROR - Error extracting text: too many values to unpack (expected 2)
+2025-06-19 21:30:00,360 - src.core.pdf_parser - ERROR - Image extraction error: argument of type 'IndirectObject' is not iterable
+2025-06-19 21:30:00,367 - src.core.pdf_parser - INFO - Stored 8 elements for C:\Users\ASUS\Desktop\test.pdf
+2025-06-19 21:41:39,991 - __main__ - INFO - 应用程序退出

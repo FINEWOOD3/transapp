@@ -1,14 +1,341 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <!-- 保留原有UI设计，确保有以下关键组件：
-       - 翻译设置区域 (service_combo, src_lang_combo, target_lang_combo)
-       - 按钮 (open_pdf_btn, translate_btn, save_btn, export_pdf_btn)
-       - 进度条 (progress_bar)
-       - 文本显示区域 (input_text, output_text)
-  -->
- </widget>
- <resources/>
- <connections/>
+  <class>MainWindow</class>
+  <widget class="QMainWindow" name="MainWindow">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1200</width>
+        <height>900</height>
+      </rect>
+    </property>
+    <property name="minimumSize">
+      <size>
+        <width>1000</width>
+        <height>750</height>
+      </size>
+    </property>
+    <property name="windowTitle">
+      <string>学术文献翻译工具</string>
+    </property>
+    <property name="styleSheet">
+      <string notr="true">
+        /* 基础样式 */
+        * {
+          font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+          font-size: 15px;
+        }
+        
+        /* 主窗口 */
+        QMainWindow {
+          background-color: #F8F9FA;
+          color: #212529;
+        }
+        
+        /* 按钮通用样式 */
+        QPushButton {
+          min-width: 120px;
+          padding: 10px 20px;
+          border-radius: 6px;
+          font-size: 15px;
+          font-weight: 500;
+          border: 1px solid #DEE2E6;
+          background: white;
+        }
+        
+        /* 主操作按钮 */
+        #open_pdf_btn {
+          background-color: #0D6EFD;
+          color: white;
+          border-color: #0B5ED7;
+        }
+        #open_pdf_btn:hover {
+          background-color: #0B5ED7;
+        }
+        
+        /* 翻译按钮 */
+        #translate_btn {
+          background-color: #198754;
+          color: white;
+          border-color: #157347;
+        }
+        #translate_btn:hover {
+          background-color: #157347;
+        }
+        
+        /* 导出按钮 */
+        #export_pdf_btn {
+          background-color: #6F42C1;
+          color: white;
+          border-color: #5E38A8;
+        }
+        #export_pdf_btn:hover {
+          background-color: #5E38A8;
+        }
+        
+        /* 文本编辑区 */
+        QTextEdit {
+          background-color: white;
+          border: 1px solid #CED4DA;
+          border-radius: 6px;
+          padding: 12px;
+          font-size: 16px;
+          selection-background-color: #0D6EFD;
+          selection-color: white;
+        }
+        
+        /* 组合框 */
+        QComboBox {
+          padding: 8px;
+          min-width: 150px;
+          font-size: 15px;
+          border: 1px solid #CED4DA;
+          border-radius: 6px;
+        }
+        
+        /* 进度条 */
+        QProgressBar {
+          height: 24px;
+          text-align: center;
+          font-size: 14px;
+          border-radius: 6px;
+          border: 1px solid #DEE2E6;
+        }
+        QProgressBar::chunk {
+          background-color: #198754;
+          border-radius: 5px;
+        }
+        
+        /* 分组框 */
+        QGroupBox {
+          border: 1px solid #DEE2E6;
+          border-radius: 8px;
+          margin-top: 16px;
+          padding-top: 20px;
+          background: white;
+          font-size: 16px;
+          font-weight: bold;
+        }
+        QGroupBox::title {
+          color: #495057;
+          subcontrol-origin: margin;
+          left: 12px;
+          padding: 0 8px;
+        }
+        
+        /* 标签 */
+        QLabel {
+          font-size: 15px;
+          color: #495057;
+        }
+        
+        /* 分割线 */
+        QSplitter::handle {
+          background: #E9ECEF;
+          width: 3px;
+        }
+        
+        /* 状态栏 */
+        QStatusBar {
+          background: #E9ECEF;
+          color: #6C757D;
+          font-size: 14px;
+          border-top: 1px solid #DEE2E6;
+        }
+      </string>
+    </property>
+    <widget class="QWidget" name="centralwidget">
+      <layout class="QVBoxLayout" name="verticalLayout" spacing="15" margin="15">
+        <item>
+          <widget class="QGroupBox" name="controlGroup">
+            <property name="title">
+              <string>翻译设置</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout" spacing="15">
+              <item>
+                <widget class="QLabel" name="srcLangLabel">
+                  <property name="text">
+                    <string>源语言：</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <widget class="QComboBox" name="src_lang_combo">
+                  <item>
+                    <property name="text">
+                      <string>英语 (English)</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>中文 (简体)</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>日语 (日本語)</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>法语 (Français)</string>
+                    </property>
+                  </item>
+                </widget>
+              </item>
+              <item>
+                <widget class="QLabel" name="targetLangLabel">
+                  <property name="text">
+                    <string>目标语言：</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <widget class="QComboBox" name="target_lang_combo">
+                  <item>
+                    <property name="text">
+                      <string>中文 (简体)</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>英语 (English)</string>
+                    </property>
+                  </item>
+                </widget>
+              </item>
+              <item>
+                <spacer name="horizontalSpacer">
+                  <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>40</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+              <item>
+                <widget class="QPushButton" name="open_pdf_btn">
+                  <property name="text">
+                    <string>打开PDF</string>
+                  </property>
+                  <property name="iconSize">
+                    <size>
+                      <width>20</width>
+                      <height>20</height>
+                    </size>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <widget class="QPushButton" name="translate_btn">
+                  <property name="text">
+                    <string>开始翻译</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <widget class="QPushButton" name="save_btn">
+                  <property name="text">
+                    <string>保存文本</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <widget class="QPushButton" name="export_pdf_btn">
+                  <property name="text">
+                    <string>导出PDF</string>
+                  </property>
+                </widget>
+              </item>
+            </layout>
+          </widget>
+        </item>
+        <item>
+          <widget class="QProgressBar" name="progress_bar">
+            <property name="value">
+              <number>0</number>
+            </property>
+            <property name="format">
+              <string>%p%</string>
+            </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QSplitter" name="splitter">
+            <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="handleWidth">
+              <number>4</number>
+            </property>
+            <widget class="QGroupBox" name="inputGroup">
+              <property name="title">
+                <string>原文内容</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+                <item>
+                  <widget class="QTextEdit" name="input_text">
+                    <property name="placeholderText">
+                      <string>此处显示PDF原文或输入要翻译的文本...</string>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
+            </widget>
+            <widget class="QGroupBox" name="outputGroup">
+              <property name="title">
+                <string>翻译结果</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                  <widget class="QTextEdit" name="output_text">
+                    <property name="placeholderText">
+                      <string>翻译结果将显示在此处...</string>
+                    </property>
+                    <property name="readOnly">
+                      <bool>true</bool>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
+            </widget>
+          </widget>
+        </item>
+      </layout>
+    </widget>
+    <widget class="QStatusBar" name="statusbar">
+      <property name="sizeGripEnabled">
+        <bool>false</bool>
+      </property>
+    </widget>
+    <widget class="QMenuBar" name="menubar">
+      <property name="geometry">
+        <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1200</width>
+          <height>25</height>
+        </rect>
+      </property>
+      <widget class="QMenu" name="menuFile">
+        <property name="title">
+          <string>文件</string>
+        </property>
+      </widget>
+      <widget class="QMenu" name="menuHelp">
+        <property name="title">
+          <string>帮助</string>
+        </property>
+      </widget>
+      <addaction name="menuFile"/>
+      <addaction name="menuHelp"/>
+    </widget>
+  </widget>
+  <resources/>
+  <connections/>
 </ui>
