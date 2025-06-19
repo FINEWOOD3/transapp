@@ -1,0 +1,13 @@
+setup.py
+src/core/__init__.py
+src/core/pdf_parser.py
+src/core/translation.py
+src/core/translator.py
+src/services/__init__.py
+src/services/baidu_trans.py
+src/tansprojectr.egg-info/PKG-INFO
+src/tansprojectr.egg-info/SOURCES.txt
+src/tansprojectr.egg-info/dependency_links.txt
+src/tansprojectr.egg-info/top_level.txt
+src/ui/__init__.py
+src/ui/main_window.py

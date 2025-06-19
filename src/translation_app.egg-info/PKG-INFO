@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: translation_app
+Version: 0.1
+Requires-Dist: PyQt5>=5.15.0
+Requires-Dist: requests>=2.25.1
+Requires-Dist: configparser>=5.0.2
+Dynamic: requires-dist
